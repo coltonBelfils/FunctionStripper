@@ -7,14 +7,23 @@ import java.util.Iterator;
  * @author CJDB
  */
 public class LinkedList<E> implements Iterable<E>{
-    int size;
-    Node head;
-    Node curent;
+    private int size;
+    private boolean isEmpty;
+    private Node head;
+    private Node curent;
 
     @Override
     public Iterator<E> iterator() {
         curent = this.head.next;
         return new linkedListIterator();
+    }
+    
+    public boolean isEmpty() {
+        return isEmpty;
+    }
+    
+    public int size() {
+        return size;
     }
     
     private class Node {
@@ -40,6 +49,7 @@ public class LinkedList<E> implements Iterable<E>{
     public LinkedList() {
         this.head = new Node();
         this.size = 0;
+        this.isEmpty = true;
     }
     
     public void add(E data) {
@@ -47,6 +57,7 @@ public class LinkedList<E> implements Iterable<E>{
         for(cur = this.head.next; cur.next != null; cur = cur.next);
         cur.next = new Node(data);
         size++;
+        this.isEmpty = false;
     }
     
     public void remove(Comparable data) {
@@ -58,11 +69,23 @@ public class LinkedList<E> implements Iterable<E>{
                 break;
             }
         }
+        if(this.head.next == null) {
+            this.isEmpty = true;
+        }
+    }
+    
+    public void clear() {
+        this.head = new Node();
+        this.size = 0;
+        this.isEmpty = true;
     }
     
     public E get(int index) {
         Node cur = this.head.next;
         for(int i = 0; i < index; i++, cur = cur.next);
+        if(cur == null) {
+            return null;
+        }
         return cur.data;
     }
     
