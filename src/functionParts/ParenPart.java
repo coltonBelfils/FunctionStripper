@@ -4,7 +4,7 @@ package functionParts;
  *
  * @author CJDB
  */
-public class ValuePart extends FunctionPart{
+public class ParenPart extends OpperationPart {
 
     @Override
     public int action() {

@@ -6,7 +6,7 @@ import java.util.Iterator;
  *
  * @author CJDB
  */
-public class linkedList<E> implements Iterable<E>{
+public class LinkedList<E> implements Iterable<E>{
     int size;
     Node head;
     Node curent;
@@ -37,14 +37,15 @@ public class linkedList<E> implements Iterable<E>{
         }
     }
     
-    public linkedList() {
+    public LinkedList() {
         this.head = new Node();
         this.size = 0;
     }
     
     public void add(E data) {
-        Node temp = this.head.next;
-        this.head.next = new Node(temp, data);
+        Node cur;
+        for(cur = this.head.next; cur.next != null; cur = cur.next);
+        cur.next = new Node(data);
         size++;
     }
     
@@ -59,7 +60,13 @@ public class linkedList<E> implements Iterable<E>{
         }
     }
     
-    private class linkedListIterator implements Iterator<E>{
+    public E get(int index) {
+        Node cur = this.head.next;
+        for(int i = 0; i < index; i++, cur = cur.next);
+        return cur.data;
+    }
+    
+    public class linkedListIterator implements Iterator<E>{
 
         @Override
         public boolean hasNext() {
