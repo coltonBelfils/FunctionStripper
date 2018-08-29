@@ -6,12 +6,12 @@ package functionParts;
  */
 public class DivisionPart extends OpperationPart{
 
-    public DivisionPart(double firstNum) {
-        super(firstNum);
+    public DivisionPart(double firstNum, int rangeStart, int rangeEnd) {
+        super(firstNum, rangeStart, rangeEnd);
     }
 
     @Override
-    public int action() {
+    public double action() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

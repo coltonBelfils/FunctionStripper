@@ -11,3 +11,5 @@ It will then sent each part of the function it finds to a constructor for each p
 - ...
 
 all these would be a child of ```FuncPart``` or something
+
+*This is obviously far from complete*

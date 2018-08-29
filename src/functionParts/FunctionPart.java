@@ -7,8 +7,15 @@ package functionParts;
 public abstract class FunctionPart {
     
     boolean completed = false;
+    int rangeStart;
+    int rangeEnd;
     
-    public abstract int action();
+    public FunctionPart(int rangeStart, int rangeEnd) {
+        this.rangeStart = rangeStart;
+        this.rangeEnd = rangeEnd;
+    }
+    
+    public abstract double action();
     
     public boolean completed() {
         return completed;
