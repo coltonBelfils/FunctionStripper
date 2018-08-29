@@ -29,7 +29,7 @@ public class FunctionParser {
         String readNum = "";
         int parenCount = 0;
         for(int i = 0; i < this.input.length(); i++) {
-            if(Character.isDigit(this.input.charAt(i))) {//number input needs work add loop
+            if(Character.isDigit(this.input.charAt(i))) {
                 int start = i;
                 for(; Character.isDigit(this.input.charAt(i)); i++) {
                     readNum += String.valueOf(this.input.charAt(i));
@@ -57,6 +57,8 @@ public class FunctionParser {
                 if(capFound == false) {
                     throw new InvalidFormatException("found ( without a matching )");
                 }
+            } else if(this.input.charAt(i) == '^') {
+                readNum(i + 1);
             } else if(this.input.charAt(i) == '+' || this.input.charAt(i) == '-') {
                 if(this.input.charAt(i) == '+') {
                     this.partsList.add(new AddPart(Double.valueOf(readNum)));
@@ -71,5 +73,14 @@ public class FunctionParser {
                 }
             }
         }
+    }
+    
+    private double readNum(final int indexOfStart) {
+        int i = indexOfStart;
+        String readNum = "";
+        for(; Character.isDigit(this.input.charAt(i)); i++) {
+            readNum += String.valueOf(this.input.charAt(i));
+        }
+        return Double.valueOf(readNum);
     }
 }

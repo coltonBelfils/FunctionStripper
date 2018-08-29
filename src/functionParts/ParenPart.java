@@ -8,8 +8,8 @@ public class ParenPart extends OpperationPart {
 
     boolean completed = false;
     
-    public ParenPart(double firstNum, int rangeStart, int rangeEnd) {
-        super(firstNum, rangeStart, rangeEnd);
+    public ParenPart(int rangeStart, int rangeEnd) {
+        super(rangeStart, rangeEnd);
     }
 
     @Override

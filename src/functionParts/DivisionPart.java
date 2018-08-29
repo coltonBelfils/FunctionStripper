@@ -6,8 +6,8 @@ package functionParts;
  */
 public class DivisionPart extends OpperationPart{
 
-    public DivisionPart(double firstNum, int rangeStart, int rangeEnd) {
-        super(firstNum, rangeStart, rangeEnd);
+    public DivisionPart(int rangeStart, int rangeEnd) {
+        super(rangeStart, rangeEnd);
     }
 
     @Override
