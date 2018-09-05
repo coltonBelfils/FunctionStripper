@@ -6,13 +6,19 @@ package functionParts;
  */
 public class AddPart extends OpperationPart{
 
-    public AddPart(int rangeStart, int rangeEnd) {
-        super(rangeStart, rangeEnd);
+    public AddPart() {
+        this.precedence = 2;
     }
 
+    /**
+     *
+     * @param a
+     * @param b
+     * @return a+b the sum
+     */
     @Override
-    public double action() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ValuePart action(double a, double b) {
+        return new ValuePart(a + b);
     }
     
 }

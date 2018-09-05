@@ -11,13 +11,19 @@ package functionParts;
  */
 public class ExponentPart extends OpperationPart{
 
-    public ExponentPart(int rangeStart, int rangeEnd) {
-        super(rangeStart, rangeEnd);
+    public ExponentPart() {
+        this.precedence = 0;
     }
 
+    /**
+     *
+     * @param a base
+     * @param b exponent
+     * @return a^b the product
+     */
     @Override
-    public double action() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ValuePart action(double a, double b) {
+        return new ValuePart(Math.pow(a, b));
     }
     
 }

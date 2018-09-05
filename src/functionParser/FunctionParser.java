@@ -11,13 +11,15 @@ import exceptions.InvalidFormatException;
 public class FunctionParser {
     
     String input;
-    LinkedList<FunctionPart> partsList = new LinkedList<>();
+    
+    LinkedList<FunctionPart> tokens = new LinkedList();
+    LinkedList<OpperationPart> stack = new LinkedList<>();
+    LinkedList<FunctionPart> output = new LinkedList<>();
         /*
-        0. Parenthises
-        1. Exponents
-        2. Multi/Div
-        3. Add/Sub
-        This may need to change at some point
+        100. Parenthises
+        0. Exponents
+        1. Multi/Div
+        2. Add/Sub
         */
     
     public FunctionParser(final String input) {
@@ -26,61 +28,78 @@ public class FunctionParser {
         }
         this.input = input;
         
-        String readNum = "";
-        int parenCount = 0;
+        this.tokenize();
+        
+        this.shuntingYard();
+    }
+    
+    private void tokenize() {
         for(int i = 0; i < this.input.length(); i++) {
             if(Character.isDigit(this.input.charAt(i))) {
-                int start = i;
+                String readNum = "";
                 for(; Character.isDigit(this.input.charAt(i)); i++) {
                     readNum += String.valueOf(this.input.charAt(i));
                 }
-                this.partsList.add(new ValuePart(Double.valueOf(readNum), start, i));
-            } else if(Character.isWhitespace(this.input.charAt(i))){
-                //skip to next line
-            } else if(this.input.charAt(i) == '(') {
-                boolean capFound = false;
-                for(int h = 0; h < input.length(); h++) {
-                    if(this.input.charAt(h) == '(') {
-                        parenCount++;
-                    }else if(this.input.charAt(h) == ')') {
-                        if(parenCount == 0) {
-                            this.partsList.add(new ParenPart(Double.valueOf(readNum), i, h));
-                            capFound = true;
-                        } else {
-                            parenCount--;
-                            if(parenCount < 0) {
-                                throw new InvalidFormatException("found ) without a matching (");
-                            }
-                        }
-                    }
-                }
-                if(capFound == false) {
-                    throw new InvalidFormatException("found ( without a matching )");
-                }
-            } else if(this.input.charAt(i) == '^') {
-                readNum(i + 1);
-            } else if(this.input.charAt(i) == '+' || this.input.charAt(i) == '-') {
-                if(this.input.charAt(i) == '+') {
-                    this.partsList.add(new AddPart(Double.valueOf(readNum)));
-                } else {
-                    this.partsList.add(new SubtractPart(Double.valueOf(readNum)));
-                }
-            } else if(this.input.charAt(i) == '*' || this.input.charAt(i) == '/') {
-                if(this.input.charAt(i) == '*') {
-                    this.partsList.add(new MultiplicationPart(Double.valueOf(readNum)));
-                } else {
-                    this.partsList.add(new DivisionPart(Double.valueOf(readNum)));
-                }
+                i--;
+                tokens.addLast(new ValuePart(Double.valueOf(readNum)));
+            } else if(Character.isWhitespace(this.input.charAt(i))) {
+                
+            }else if(Character.valueOf(this.input.charAt(i)).equals('*')) {
+                tokens.addLast(new MultiplicationPart());
+            } else if(Character.valueOf(this.input.charAt(i)).equals('/')) {
+                tokens.addLast(new DivisionPart());
+            } else if(Character.valueOf(this.input.charAt(i)).equals('+')) {
+                tokens.addLast(new AddPart());
+            } else if(Character.valueOf(this.input.charAt(i)).equals('-')) {
+                tokens.addLast(new SubtractPart());
+            } else if(Character.valueOf(this.input.charAt(i)).equals('(')) {
+                tokens.addLast(new ParenHeadPart());
+            } else if(Character.valueOf(this.input.charAt(i)).equals(')')) {
+                tokens.addLast(new ParenTailPart());
+            } else if(Character.valueOf(this.input.charAt(i)).equals('^')) {
+                tokens.addLast(new ExponentPart());
+            } else if(Character.valueOf(this.input.charAt(i)).equals('%')) {
+                tokens.addLast(new ModPart());
             }
         }
     }
     
-    private double readNum(final int indexOfStart) {
-        int i = indexOfStart;
-        String readNum = "";
-        for(; Character.isDigit(this.input.charAt(i)); i++) {
-            readNum += String.valueOf(this.input.charAt(i));
+    private void shuntingYard() {
+        for(FunctionPart x : tokens) {
+            if(x.getClass().getSimpleName().equals(ValuePart.class.getSimpleName())) {
+                output.addLast(x);
+            } else if(x.getClass().getSimpleName().equals(ParenHeadPart.class.getSimpleName())) {
+                stack.addLast((OpperationPart)x);
+            } else if(x.getClass().getSimpleName().equals(ParenTailPart.class.getSimpleName())) {
+                while(!stack.isEmpty() && !stack.getLast().getClass().getSimpleName().equals(ParenHeadPart.class.getSimpleName())) {
+                    output.addLast(stack.getLast());
+                    stack.removeLast();
+                }
+                stack.removeLast();
+            } else {
+                while(!stack.isEmpty() && stack.getLast().getPrecedence() < ((OpperationPart)x).getPrecedence()) {
+                    output.addLast(stack.getLast());
+                    stack.removeLast();
+                }
+                stack.addLast(((OpperationPart)x));
+            }
         }
-        return Double.valueOf(readNum);
+        while(!stack.isEmpty()) {
+            output.addLast(stack.getLast());
+            stack.removeLast();
+        }
+    }
+    
+    public double evaluate() {
+        while(output.size() > 1) {
+            int i;
+            for(i = 0; !output.get(i).getClass().getSuperclass().getSimpleName().equals(OpperationPart.class.getSimpleName()); i++);
+            ValuePart temp = ((OpperationPart)output.get(i)).action(((ValuePart)output.get(i - 2)).action(), ((ValuePart)output.get(i - 1)).action());
+            output.removeIndex(i);
+            output.removeIndex(i - 1);
+            output.removeIndex(i - 2);
+            output.addIndex(i - 2, temp);
+        }
+        return ((ValuePart)output.getFirst()).action();
     }
 }

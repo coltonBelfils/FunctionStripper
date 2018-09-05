@@ -6,9 +6,15 @@ package functionParts;
  */
 public abstract class OpperationPart extends FunctionPart{
     
-    private double firstNum;
+    protected int precedence;
     
-    public OpperationPart(int rangeStart, int rangeEnd) {
-        super(rangeStart, rangeEnd);
+    public OpperationPart() {
+        
+    }
+    
+    public abstract ValuePart action(double a, double b);
+    
+    public int getPrecedence() {
+        return this.precedence;
     }
 }

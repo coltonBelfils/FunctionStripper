@@ -6,13 +6,19 @@ package functionParts;
  */
 public class SubtractPart extends OpperationPart{
 
-    public SubtractPart(int rangeStart, int rangeEnd) {
-        super(rangeStart, rangeEnd);
+    public SubtractPart() {
+        this.precedence = 2;
     }
 
+    /**
+     *
+     * @param a
+     * @param b
+     * @return a-b the difference
+     */
     @Override
-    public double action() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ValuePart action(double a, double b) {
+        return new ValuePart(a - b);
     }
     
 }

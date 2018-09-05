@@ -6,13 +6,19 @@ package functionParts;
  */
 public class MultiplicationPart extends OpperationPart{
 
-    public MultiplicationPart(int rangeStart, int rangeEnd) {
-        super(rangeStart, rangeEnd);
+    public MultiplicationPart() {
+        this.precedence = 1;
     }
 
+    /**
+     *
+     * @param a
+     * @param b
+     * @return a*b the product
+     */
     @Override
-    public double action() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ValuePart action(double a, double b) {
+        return new ValuePart(a * b);
     }
     
 }

@@ -4,21 +4,21 @@ package functionParts;
  *
  * @author CJDB
  */
-public class DivisionPart extends OpperationPart{
-
-    public DivisionPart() {
+public class ModPart extends OpperationPart {
+    
+    public ModPart() {
         this.precedence = 1;
     }
 
     /**
      *
-     * @param a dividend: number being divided
+     * @param a dividend: number getting divided
      * @param b divisor: number dividing
-     * @return a/b the quotient
+     * @return a%b the remainder
      */
     @Override
     public ValuePart action(double a, double b) {
-        return new ValuePart(a / b);
+        return new ValuePart(a % b);
     }
     
 }
