@@ -37,11 +37,16 @@ public class FunctionParser {
         for(int i = 0; i < this.input.length(); i++) {
             if(Character.isDigit(this.input.charAt(i))) {
                 String readNum = "";
-                for(; Character.isDigit(this.input.charAt(i)); i++) {
+                for(; input.length() > i && Character.isDigit(this.input.charAt(i)); i++) {
                     readNum += String.valueOf(this.input.charAt(i));
                 }
                 i--;
-                tokens.addLast(new ValuePart(Double.valueOf(readNum)));
+                if(tokens.size() > 1 && tokens.get(tokens.size() - 1).getClass().getSimpleName().equals(ParenTailPart.class.getSimpleName())) {
+                    tokens.addLast(new MultiplicationPart());
+                    tokens.addLast(new ValuePart(Double.valueOf(readNum)));
+                } else {
+                    tokens.addLast(new ValuePart(Double.valueOf(readNum)));
+                }
             } else if(Character.isWhitespace(this.input.charAt(i))) {
                 
             }else if(Character.valueOf(this.input.charAt(i)).equals('*')) {
@@ -54,6 +59,9 @@ public class FunctionParser {
                 tokens.addLast(new SubtractPart());
             } else if(Character.valueOf(this.input.charAt(i)).equals('(')) {
                 tokens.addLast(new ParenHeadPart());
+                if(tokens.size() > 1 && tokens.get(tokens.size() - 2).getClass().getSimpleName().equals(ValuePart.class.getSimpleName())) {
+                    tokens.addIndex(tokens.size() - 2, new MultiplicationPart());
+                }
             } else if(Character.valueOf(this.input.charAt(i)).equals(')')) {
                 tokens.addLast(new ParenTailPart());
             } else if(Character.valueOf(this.input.charAt(i)).equals('^')) {
