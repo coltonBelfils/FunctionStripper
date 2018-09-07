@@ -18,7 +18,7 @@ public class DivisionPart extends OpperationPart{
      */
     @Override
     public ValuePart action(double a, double b) {
-        return new ValuePart(a / b);
+        return new NumberPart(a / b);
     }
     
 }

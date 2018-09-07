@@ -23,7 +23,7 @@ public class ExponentPart extends OpperationPart{
      */
     @Override
     public ValuePart action(double a, double b) {
-        return new ValuePart(Math.pow(a, b));
+        return new NumberPart(Math.pow(a, b));
     }
     
 }

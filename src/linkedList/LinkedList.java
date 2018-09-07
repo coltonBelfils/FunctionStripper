@@ -80,7 +80,7 @@ public class LinkedList<E> implements Iterable<E>{
         if(this.head.next == null && index == 0) {
             this.addFirst(data);
         } else if(index >= this.size || index < 0) {
-            throw new IndexOutOfBoundsException(index + " is out of bounds");
+            throw new IndexOutOfBoundsException(index + " is out of bounds: LinkedList.addIndex(int index, E data)");
         } else {
             Node cur, pre;
             int i;
@@ -186,6 +186,16 @@ public class LinkedList<E> implements Iterable<E>{
             throw new IllegalStateException("List is empty");
         }
         return this.head.next.data;
+    }
+    
+    public boolean contains(E data) {
+        Node cur;
+        for(cur = this.head.next; cur != null; cur = cur.next) {
+            if(cur.data.equals(data)) {
+                return true;
+            }
+        }
+        return false;
     }
     
     public class linkedListIterator implements Iterator<E>{

@@ -6,14 +6,9 @@ package functionParts;
  */
 public class ValuePart extends FunctionPart{
     
-    double value;
-    
-    public ValuePart(double value) {
-        this.value = value;
-    }
+    protected double value;
     
     public double action() {
         return this.value;
     }
-    
 }
