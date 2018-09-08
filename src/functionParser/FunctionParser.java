@@ -112,7 +112,7 @@ public class FunctionParser {
                 }
                 stack.removeLast();
             } else {
-                while (!stack.isEmpty() && stack.getLast().getPrecedence() < ((OpperationPart) x).getPrecedence()) {
+                while (!stack.isEmpty() && (((stack.getLast().getPrecedence() == ((OpperationPart) x).getPrecedence()) && (stack.getLast().isLeftAssociative())) || (stack.getLast().getPrecedence() > ((OpperationPart) x).getPrecedence()))) {
                     output.addLast(stack.getLast());
                     stack.removeLast();
                 }
@@ -126,19 +126,19 @@ public class FunctionParser {
     }
 
     public double evaluate(double[] varValues) {
-        if(varValues == null || varValues.length != vars.size()) {
+        if (varValues == null || varValues.length != vars.size()) {
             throw new IllegalArgumentException("Incorect amount of values: FunctionParser.evaluate(double[] varValues)");
         }
-        
+
         int count = 0;
-        for(VariablePart x : vars) {
+        for (VariablePart x : vars) {
             x.setValue(varValues[count]);
             count++;
         }
-        
+
         return this.evaluate();
     }
-    
+
     public double evaluate() {
         while (output.size() > 1) {
             int i;

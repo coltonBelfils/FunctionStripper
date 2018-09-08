@@ -7,6 +7,7 @@ package functionParts;
 public class MultiplicationPart extends OpperationPart{
 
     public MultiplicationPart() {
+        super(true);
         this.precedence = 1;
     }
 

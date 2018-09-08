@@ -12,6 +12,7 @@ package functionParts;
 public class ExponentPart extends OpperationPart{
 
     public ExponentPart() {
+        super(false);
         this.precedence = 0;
     }
 

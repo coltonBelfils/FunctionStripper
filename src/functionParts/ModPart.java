@@ -7,6 +7,7 @@ package functionParts;
 public class ModPart extends OpperationPart {
     
     public ModPart() {
+        super(true);
         this.precedence = 1;
     }
 
